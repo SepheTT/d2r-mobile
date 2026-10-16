@@ -10,7 +10,9 @@ uint64_t now_ns(void) { return bp_now(); }
 
 int main(void) { @autoreleasepool {
     prog_t vertex = {.magic = MAGIC('P','R','O','G'), .serial = nvn_new_serial()};
-    prog_t fragment = {.magic = MAGIC('P','R','O','G'), .serial = nvn_new_serial()};
+    // 上游渲染单测使用无 magic 的合成程序，只由序号表提供着色器。
+    // Upstream renderer tests use synthetic programs without magic, with shaders supplied by the serial table.
+    prog_t fragment = {.serial = nvn_new_serial()};
     NvProg *v = [NvProg new], *f = [NvProg new];
     v->sh[0] = [NvShader new]; f->sh[1] = [NvShader new];
     serial_put(vertex.serial, v); serial_put(fragment.serial, f);

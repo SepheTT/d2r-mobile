@@ -15,7 +15,6 @@ static void binding_error(const char *message) {
 const prog_t *nvn_program_bind(const prog_t *current, const prog_t *source, unsigned mask) {
     if (mask & ~63u) binding_error("invalid stage mask");
     if (current && current->magic != NVN_BINDING_MAGIC) binding_error("invalid previous state");
-    if (source && source->magic != MAGIC('P', 'R', 'O', 'G')) binding_error("invalid source program");
     nvn_program_binding key = {0};
     if (current) {
         const nvn_program_binding *old = (const nvn_program_binding *)current;
