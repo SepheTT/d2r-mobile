@@ -33,10 +33,10 @@ int main(void) {
     relocate(&g_mod[0]);
     uint64_t *values=(uint64_t *)(importer+0x200);
     assert(values[0]==0); // 可选回调缺失，客体应跳过 | Optional callback absent: guest must skip it
-    assert(values[1]==(uintptr_t)(exporter+0x100)); // weak import with guest definition
-    assert(values[2]==(uintptr_t)host_provided); // weak import with host definition
-    assert(values[3]!=0); // strong unresolved import retains the named failure stub
-    assert(resolve_sym(&g_mod[0], "required", 1)==0); // must not reuse a strong stub
-    puts("Host ELF linking: absent weak, guest-defined weak, host-defined weak, strong failure stub passed.");
+    assert(values[1]==(uintptr_t)(exporter+0x100)); // 客体提供弱导入 | Weak import with guest definition
+    assert(values[2]==(uintptr_t)host_provided); // 宿主提供弱导入 | Weak import with host definition
+    assert(values[3]!=0); // 未解析的强导入保留记名桩 | Unresolved strong import retains a named stub
+    assert(resolve_sym(&g_mod[0], "required", 1)==0); // 不能复用强导入的桩 | Must not reuse a strong import stub
+    puts("Host ELF linking: absent weak, guest-defined weak, host-defined weak, strong named stub passed.");
     return 0;
 }
